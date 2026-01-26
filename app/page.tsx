@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 type Preview = {
@@ -17,33 +17,50 @@ const previews: Preview[] = [
 ];
 
 export default function HomePage() {
-  const [active, setActive] = useState<Preview | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Close on Escape
+  const active = useMemo(() => {
+    if (activeIndex === null) return null;
+      return previews[activeIndex];
+  }, [activeIndex]);
+
+  const goPrev = () => {
+    setActiveIndex((i) =>
+      i === null ? i : (i - 1 + previews.length) % previews.length);
+  };
+
+  const goNext = () => {
+    setActiveIndex((i) => (i === null ? i : (i + 1) % previews.length));
+  };
+
+  // Keyboard controls while modal is open
   useEffect(() => {
-    if (!active) return;
+    if (activeIndex === null) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActive(null);
+      if (e.key === "Escape") setActiveIndex(null);
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
     };
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [active]);
+      return () => window.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex]);
 
   return (
     <main className="landing">
       <section className="landingInner">
         <div className="vStack" aria-label="Time range previews">
-          {previews.map((p) => (
+          {previews.map((p, idx) => (
             <div
               key={p.src}
               className="vCard"
               role="button"
               tabIndex={0}
-              onClick={() => setActive(p)}
+              onClick={() => setActiveIndex(idx)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") setActive(p);
+                if (e.key === "Enter" || e.key === " ") setActiveIndex(idx);
               }}
             >
               <img className="vImg" src={p.src} alt={p.alt} />
@@ -68,10 +85,13 @@ export default function HomePage() {
             <Link className="btn btnPrimary" href="/login">
               Login with Spotify
             </Link>
-            <Link className="btn" href="/about">
+            <Link className="btn btn" href="/about">
               About
             </Link>
-            <Link className="btn" href="/contact">
+            <Link className="btn btn" href="/privacy">
+              Privacy Policy  
+            </Link>
+            <Link className="btn btn" href="/contact">
               Contact
             </Link>
           </div>
@@ -85,13 +105,38 @@ export default function HomePage() {
           role="dialog"
           aria-modal="true"
           aria-label={`${active.title} preview`}
-          onClick={() => setActive(null)}
+          onClick={() => setActiveIndex(null)}
         >
           <div className="modalCard" onClick={(e) => e.stopPropagation()}>
-            <button className="modalClose" onClick={() => setActive(null)} aria-label="Close preview">
-              ✕
+            <button
+              className="modalClose"
+              onClick={() => setActiveIndex(null)}
+              aria-label="Close preview"
+              type="button"
+            >
+              X
             </button>
+
+            <button
+              className="modalNav modalNavLeft"
+              onClick={goPrev}
+              aria-label="Previous image"
+              type="button"
+            >
+              ←
+            </button>
+
+            <button
+              className="modalNav modalNavRight"
+              onClick={goNext}
+              aria-label="Next image"
+              type="button"
+            >
+              →
+            </button>
+
             <img className="modalImg" src={active.src} alt={active.alt} />
+
             <div className="modalCaption">
               <div className="modalTitle">{active.title}</div>
               <div className="modalSub">{active.sub}</div>

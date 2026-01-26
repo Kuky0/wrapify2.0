@@ -1,8 +1,10 @@
+﻿/* CSS custom properties (variables) used throughout the page. */
 :root {
   --text: #fff;
   --muted: rgba(255, 255, 255, 0.7);
 }
 
+/* Base page styling: full-height, black background, white text, simple font stack. */
 html,
 body {
   height: 100%;
@@ -12,14 +14,22 @@ body {
 }
 
 /* --- Landing layout (no scroll) --- */
+/*
+  `.landing` is the outer wrapper for the homepage.
+  It centers the inner content both vertically and horizontally.
+*/
 .landing {
-  min-height: 100svh;
+  min-height: 100svh;          /* use the small viewport height (mobile-friendly) */
   display: grid;
-  place-items: center;
+  place-items: center;         /* center children in both axes */
   padding: 24px;
-  overflow: hidden; /* prevents tiny overflow from shadows */
+  overflow: hidden;            /* prevents tiny overflow from shadows */
 }
 
+/*
+  `.landingInner` is a two-column grid:
+  left = preview stack, right = text panel.
+*/
 .landingInner {
   width: min(1100px, 100%);
   display: grid;
@@ -30,6 +40,7 @@ body {
   justify-content: center;
 }
 
+/* On smaller screens, collapse to a single column. */
 @media (max-width: 900px) {
   .landingInner {
     grid-template-columns: 1fr;
@@ -38,6 +49,10 @@ body {
 }
 
 /* --- Staggered vertical pile --- */
+/*
+  `.vStack` holds the three cards.
+  `isolation: isolate` creates a new stacking context so z-index behaves predictably.
+*/
 .vStack {
   position: relative;
   display: flex;
@@ -50,15 +65,15 @@ body {
 .vCard {
   width: 190px;
 
-  /* This padding creates the “frame thickness” */
+  /* This padding creates the “frame thickness”. */
   padding: 15px;
 
-  /* Frame color */
+  /* Frame color. */
   background: #3a3a3a; /* grey frame */
 
   border-radius: 18px;
 
-  /* Important: makes the overlap hide frames underneath */
+  /* Shadow helps sell the layered pile effect. */
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
   position: relative;
 
@@ -76,7 +91,7 @@ body {
   border-radius: 12px; /* slightly smaller so it fits inside frame */
 }
 
-/* Overlap vertically so corners touch */
+/* Overlap vertically so corners touch (a tight stack). */
 .vCard + .vCard {
   margin-top: -5px; /* close, but not overlapping */
 }
@@ -98,6 +113,10 @@ body {
 /* Hover: slight lift + scale (keep the pile vibe) */
 .vCard:hover {
   border-color: rgba(255, 255, 255, 0.28);
+  /*
+    We re-use the per-card custom properties so the hover transform
+    preserves each card's original offset + rotation.
+  */
   transform: translateX(var(--x, 0px)) rotate(var(--r, 0deg)) scale(1.03);
 }
 
@@ -122,6 +141,7 @@ body {
   );
 }
 
+/* Fade the overlay in when the user hovers a card. */
 .vCard:hover .overlay {
   opacity: 1;
 }
@@ -158,12 +178,13 @@ body {
   flex-wrap: wrap;
 }
 
+/* Shared button styling for all links in the CTA row. */
 .btn {
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: transparent;
   color: var(--text);
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: 999px; /* pill shape */
   cursor: pointer;
   transition: transform 160ms ease, border-color 160ms ease;
   text-decoration: none;
@@ -177,6 +198,7 @@ body {
   border-color: rgba(255, 255, 255, 0.32);
 }
 
+/* Primary action gets Spotify-green styling. */
 .btnPrimary {
   background: #1db954;
   border-color: transparent;
@@ -184,9 +206,11 @@ body {
   font-weight: 700;
 }
 
+/* Sensible global defaults. */
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 
+/* The right panel background / container. */
 .textPanel {
   background: #3a3a3a; /* dark grey panel */
   border-radius: 18px;
@@ -196,6 +220,7 @@ html, body { margin: 0; padding: 0; }
 }
 
 /* --- Modal / Lightbox --- */
+/* Full-screen dimmed backdrop behind the modal card. */
 .modalBackdrop {
   position: fixed;
   inset: 0;
@@ -206,6 +231,7 @@ html, body { margin: 0; padding: 0; }
   z-index: 9999;
 }
 
+/* The modal container that holds the large image and the caption. */
 .modalCard {
   position: relative;
   width: min(720px, 92vw);
@@ -219,15 +245,17 @@ html, body { margin: 0; padding: 0; }
   grid-template-rows: 1fr auto;
 }
 
+/* Large image area inside the modal. */
 .modalImg {
   width: 100%;
   height: 100%;
   max-height: 70svh;           /* key: ensures room for caption */
   object-fit: contain;         /* key: fit image without cropping */
   display: block;
-  background: #171717;            /* letterbox bars match your theme */
+  background: #171717;         /* letterbox bars match your theme */
 }
 
+/* Close button in the top-right corner of the modal. */
 .modalClose {
   position: absolute;
   top: 10px;
@@ -241,6 +269,7 @@ html, body { margin: 0; padding: 0; }
   cursor: pointer;
 }
 
+/* Caption panel under the image. */
 .modalCaption {
   padding: 14px 16px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
@@ -254,4 +283,25 @@ html, body { margin: 0; padding: 0; }
   color: var(--muted);
   margin-top: 2px;
   font-size: 14px;
+}
+
+.modalNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+}
+
+.modalNavLeft {
+  left: 12px;
+}
+
+.modalNavRight {
+  right: 12px;
 }
