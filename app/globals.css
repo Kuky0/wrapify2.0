@@ -26,6 +26,8 @@ body {
   grid-template-columns: 340px 1fr;
   gap: 56px;
   align-items: center;
+  justify-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 900px) {
@@ -40,7 +42,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   isolation: isolate; /* ensures z-index layers behave cleanly */
 }
 
@@ -76,7 +78,7 @@ body {
 
 /* Overlap vertically so corners touch */
 .vCard + .vCard {
-  margin-top: 1px; /* close, but not overlapping */
+  margin-top: -5px; /* close, but not overlapping */
 }
 
 /* Left / Right / Left with “random-ish” offsets */
@@ -188,7 +190,7 @@ html, body { margin: 0; padding: 0; }
 .textPanel {
   background: #3a3a3a; /* dark grey panel */
   border-radius: 18px;
-  padding: 22px 22px;
+  padding: 26px 28px;
   backdrop-filter: blur(8px);
+  max-width: 600px;
 }
-

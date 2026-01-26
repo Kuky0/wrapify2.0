@@ -47,9 +47,12 @@ export default function HomePage() {
             <Link className="btn btnPrimary" href="/login">
               Login with Spotify
             </Link>
-            <button className="btn" type="button">
-              How it works
-            </button>
+            <Link className="btn" href="/about">
+              About
+            </Link>
+            <Link className="btn" href="/contact">
+              Contact
+            </Link>
           </div>
         </div>
       </section>
