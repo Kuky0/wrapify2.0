@@ -4,10 +4,12 @@
   --muted: rgba(255, 255, 255, 0.7);
 }
 
-/* Base page styling: full-height, black background, white text, simple font stack. */
+/* Base page styling + sensible defaults. */
 html,
 body {
   height: 100%;
+  margin: 0;
+  padding: 0;
   background: #000; /* black */
   color: #fff;      /* white text */
   font-family: sans-serif, Helvetica Neue, Helvetica, Arial;
@@ -15,12 +17,37 @@ body {
 
 /* Sensible global defaults. */
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+
+/* --- Reusable Page Shell + Typography --- */
+/*
+  Use `.pageCenter` on any route that should be centered with consistent padding.
+  This helps keep About, Contact, Privacy, etc. visually consistent without duplication.
+*/
+.pageCenter {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* Shared title and lead paragraph styles for text panels. */
+.pageTitle {
+  margin: 0;
+  font-size: 52px;
+  letter-spacing: -1px;
+}
+
+.pageLead {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 60ch;
+}
 
 /* --- Landing layout (no scroll) --- */
 /*
-  `.landing` is the outer wrapper for the homepage.
-  It centers the inner content both vertically and horizontally.
+  `.landing` is the homepage shell.
+  It intentionally mirrors `.pageCenter` but adds overflow control for the card pile.
 */
 .landing {
   min-height: 100svh;          /* use the small viewport height (mobile-friendly) */
@@ -69,7 +96,7 @@ html, body { margin: 0; padding: 0; }
 .vCard {
   width: 190px;
 
-  /* This padding creates the “frame thickness”. */
+  /* This padding creates the frame thickness. */
   padding: 15px;
 
   /* Frame color. */
@@ -100,13 +127,13 @@ html, body { margin: 0; padding: 0; }
   margin-top: -5px; /* close, but not overlapping */
 }
 
-/* Left / Right / Left with “random-ish” offsets */
+/* Left / Right / Left with random-ish offsets */
 .vCard:nth-child(1) {
   transform: translateX(-10px) rotate(-1.2deg);
   z-index: 3;
 }
 .vCard:nth-child(2) {
-  transform: translateX(34px) rotate(1.0deg);
+  transform: translateX(34px) rotate(1deg);
   z-index: 2;
 }
 .vCard:nth-child(3) {
@@ -126,7 +153,7 @@ html, body { margin: 0; padding: 0; }
 
 /* Store each card's transform values for hover to preserve position */
 .vCard:nth-child(1) { --x: -10px; --r: -1.2deg; }
-.vCard:nth-child(2) { --x: 34px;  --r: 1.0deg; }
+.vCard:nth-child(2) { --x: 34px;  --r: 1deg; }
 .vCard:nth-child(3) { --x: 4px;   --r: -0.6deg; }
 
 /* --- Hover label overlay (no text until hover) --- */
@@ -161,20 +188,7 @@ html, body { margin: 0; padding: 0; }
   margin-top: 2px;
 }
 
-/* --- Right copy/buttons (Spotify-ish vibe) --- */
-.rightSide h1 {
-  margin: 0;
-  font-size: 52px;
-  letter-spacing: -1px;
-}
-
-.rightSide p {
-  margin: 14px 0 0;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 60ch;
-}
-
+/* --- Buttons + Panel (reused across routes) --- */
 .ctaRow {
   margin-top: 22px;
   display: flex;
@@ -285,6 +299,7 @@ html, body { margin: 0; padding: 0; }
   font-size: 14px;
 }
 
+/* Optional modal nav buttons (left/right). Keep for future use. */
 .modalNav {
   position: absolute;
   top: 50%;
@@ -306,6 +321,7 @@ html, body { margin: 0; padding: 0; }
   right: 12px;
 }
 
+/* Legacy alias: if you still use `aboutPage`, it behaves like `pageCenter`. */
 .aboutPage {
   min-height: 100svh;
   display: grid;
@@ -313,15 +329,3 @@ html, body { margin: 0; padding: 0; }
   padding: 24px;
 }
 
-.aboutPage h1 {
-  margin: 0;
-  font-size: 52px;
-  letter-spacing: -1px;
-}
-
-.aboutPage p {
-  margin: 14px 0 0;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 60ch;
-}
