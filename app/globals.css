@@ -13,6 +13,10 @@ body {
   font-family: sans-serif, Helvetica Neue, Helvetica, Arial;
 }
 
+/* Sensible global defaults. */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
 /* --- Landing layout (no scroll) --- */
 /*
   `.landing` is the outer wrapper for the homepage.
@@ -206,10 +210,6 @@ body {
   font-weight: 700;
 }
 
-/* Sensible global defaults. */
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-
 /* The right panel background / container. */
 .textPanel {
   background: #3a3a3a; /* dark grey panel */
@@ -304,4 +304,24 @@ html, body { margin: 0; padding: 0; }
 
 .modalNavRight {
   right: 12px;
+}
+
+.aboutPage {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.aboutPage h1 {
+  margin: 0;
+  font-size: 52px;
+  letter-spacing: -1px;
+}
+
+.aboutPage p {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 60ch;
 }
