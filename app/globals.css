@@ -320,12 +320,3 @@ body {
 .modalNavRight {
   right: 12px;
 }
-
-/* Legacy alias: if you still use `aboutPage`, it behaves like `pageCenter`. */
-.aboutPage {
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
