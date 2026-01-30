@@ -29,21 +29,44 @@ export default function HomePage() {
   // `null` means the modal is closed.
   const [active, setActive] = useState<Preview | null>(null);
 
+  // Go to the previous preview (wraps around).
+  const goPrev = () => {
+    setActive((cur) => {
+      if (!cur) return cur;
+      const i = previews.findIndex((p) => p.src === cur.src);
+      if (i < 0) return cur;
+      return previews[(i - 1 + previews.length) % previews.length];
+    });
+  };
+
+  // Go to the next preview (wraps around).
+  const goNext = () => {
+    setActive((cur) => {
+      if (!cur) return cur;
+      const i = previews.findIndex((p) => p.src === cur.src);
+      if (i < 0) return cur;
+      return previews[(i + 1) % previews.length];
+    });
+  };
+
   // Close the modal when the user presses Escape.
   // This effect only attaches the event listener while a modal is open.
   useEffect(() => {
     // If no modal is open, do nothing and skip the listener.
     if (!active) return;
 
-    // Keyboard handler: if Escape is pressed, close the modal.
+    // Keyboard handler:
+    // - Escape closes
+    // - ArrowLeft / ArrowRight navigate
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null);
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
     };
 
-    // Register the handler on mount / when `active` becomes truthy...
     window.addEventListener("keydown", onKeyDown);
-    // ...and clean it up when the modal closes or the component unmounts.
     return () => window.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   // JSX: the landing page plus a conditional modal (lightbox).
@@ -126,7 +149,26 @@ export default function HomePage() {
               onClick={() => setActive(null)}
               aria-label="Close preview"
             >
-              âœ•
+              X
+            </button>
+
+            {/* NEW: Left/Right navigation arrows */}
+            <button
+              className="modalNav modalNavLeft"
+              onClick={goPrev}
+              aria-label="Previous preview"
+              type="button"
+            >
+              {"<"}
+            </button>
+
+            <button
+              className="modalNav modalNavRight"
+              onClick={goNext}
+              aria-label="Next preview"
+              type="button"
+            >
+              {">"}
             </button>
 
             {/* Full-size preview image */}

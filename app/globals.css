@@ -19,10 +19,6 @@ body {
 * { box-sizing: border-box; }
 
 /* --- Reusable Page Shell + Typography --- */
-/*
-  Use `.pageCenter` on any route that should be centered with consistent padding.
-  This helps keep About, Contact, Privacy, etc. visually consistent without duplication.
-*/
 .pageCenter {
   min-height: 100svh;
   display: grid;
@@ -30,7 +26,6 @@ body {
   padding: 24px;
 }
 
-/* Shared title and lead paragraph styles for text panels. */
 .pageTitle {
   margin: 0;
   font-size: 52px;
@@ -45,22 +40,14 @@ body {
 }
 
 /* --- Landing layout (no scroll) --- */
-/*
-  `.landing` is the homepage shell.
-  It intentionally mirrors `.pageCenter` but adds overflow control for the card pile.
-*/
 .landing {
-  min-height: 100svh;          /* use the small viewport height (mobile-friendly) */
+  min-height: 100svh;
   display: grid;
-  place-items: center;         /* center children in both axes */
+  place-items: center;
   padding: 24px;
-  overflow: hidden;            /* prevents tiny overflow from shadows */
+  overflow: hidden;
 }
 
-/*
-  `.landingInner` is a two-column grid:
-  left = preview stack, right = text panel.
-*/
 .landingInner {
   width: min(1100px, 100%);
   display: grid;
@@ -71,7 +58,6 @@ body {
   justify-content: center;
 }
 
-/* On smaller screens, collapse to a single column. */
 @media (max-width: 900px) {
   .landingInner {
     grid-template-columns: 1fr;
@@ -80,54 +66,37 @@ body {
 }
 
 /* --- Staggered vertical pile --- */
-/*
-  `.vStack` holds the three cards.
-  `isolation: isolate` creates a new stacking context so z-index behaves predictably.
-*/
 .vStack {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  isolation: isolate; /* ensures z-index layers behave cleanly */
+  isolation: isolate;
 }
 
-/* The FRAME (outside the image) */
 .vCard {
   width: 190px;
-
-  /* This padding creates the frame thickness. */
   padding: 15px;
-
-  /* Frame color. */
-  background: #3a3a3a; /* grey frame */
-
+  background: #3a3a3a;
   border-radius: 18px;
-
-  /* Shadow helps sell the layered pile effect. */
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
   position: relative;
-
   cursor: pointer;
   transition: transform 160ms ease;
 }
 
-/* The PHOTO (no border; sits inside the frame) */
 .vImg {
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   display: block;
-
-  border-radius: 12px; /* slightly smaller so it fits inside frame */
+  border-radius: 12px;
 }
 
-/* Overlap vertically so corners touch (a tight stack). */
 .vCard + .vCard {
-  margin-top: -5px; /* close, but not overlapping */
+  margin-top: -5px;
 }
 
-/* Left / Right / Left with random-ish offsets */
 .vCard:nth-child(1) {
   transform: translateX(-10px) rotate(-1.2deg);
   z-index: 3;
@@ -141,22 +110,15 @@ body {
   z-index: 1;
 }
 
-/* Hover: slight lift + scale (keep the pile vibe) */
 .vCard:hover {
   border-color: rgba(255, 255, 255, 0.28);
-  /*
-    We re-use the per-card custom properties so the hover transform
-    preserves each card's original offset + rotation.
-  */
   transform: translateX(var(--x, 0px)) rotate(var(--r, 0deg)) scale(1.03);
 }
 
-/* Store each card's transform values for hover to preserve position */
 .vCard:nth-child(1) { --x: -10px; --r: -1.2deg; }
 .vCard:nth-child(2) { --x: 34px;  --r: 1deg; }
 .vCard:nth-child(3) { --x: 4px;   --r: -0.6deg; }
 
-/* --- Hover label overlay (no text until hover) --- */
 .overlay {
   position: absolute;
   inset: 0;
@@ -172,7 +134,6 @@ body {
   );
 }
 
-/* Fade the overlay in when the user hovers a card. */
 .vCard:hover .overlay {
   opacity: 1;
 }
@@ -196,13 +157,12 @@ body {
   flex-wrap: wrap;
 }
 
-/* Shared button styling for all links in the CTA row. */
 .btn {
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: transparent;
   color: var(--text);
   padding: 10px 14px;
-  border-radius: 999px; /* pill shape */
+  border-radius: 999px;
   cursor: pointer;
   transition: transform 160ms ease, border-color 160ms ease;
   text-decoration: none;
@@ -216,7 +176,6 @@ body {
   border-color: rgba(255, 255, 255, 0.32);
 }
 
-/* Primary action gets Spotify-green styling. */
 .btnPrimary {
   background: #1db954;
   border-color: transparent;
@@ -224,9 +183,8 @@ body {
   font-weight: 700;
 }
 
-/* The right panel background / container. */
 .textPanel {
-  background: #3a3a3a; /* dark grey panel */
+  background: #3a3a3a;
   border-radius: 18px;
   padding: 26px 28px;
   backdrop-filter: blur(8px);
@@ -234,7 +192,6 @@ body {
 }
 
 /* --- Modal / Lightbox --- */
-/* Full-screen dimmed backdrop behind the modal card. */
 .modalBackdrop {
   position: fixed;
   inset: 0;
@@ -245,31 +202,28 @@ body {
   z-index: 9999;
 }
 
-/* The modal container that holds the large image and the caption. */
 .modalCard {
   position: relative;
   width: min(720px, 92vw);
-  max-height: 86svh;            /* key: prevents it from filling the screen */
+  max-height: 86svh;
   border-radius: 18px;
   background: #121212;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 1);
   overflow: hidden;
-
-  display: grid;               /* key: image area + caption area */
+  display: grid;
   grid-template-rows: 1fr auto;
 }
 
-/* Large image area inside the modal. */
 .modalImg {
   width: 100%;
   height: 100%;
-  max-height: 70svh;           /* key: ensures room for caption */
-  object-fit: contain;         /* key: fit image without cropping */
+  max-height: 70svh;
+  object-fit: contain;
   display: block;
-  background: #171717;         /* letterbox bars match your theme */
+  background: #171717;
 }
 
-/* Close button in the top-right corner of the modal. */
+/* Close button */
 .modalClose {
   position: absolute;
   top: 10px;
@@ -281,9 +235,9 @@ body {
   width: 36px;
   height: 36px;
   cursor: pointer;
+  z-index: 3; /* NEW: ensure above nav + image */
 }
 
-/* Caption panel under the image. */
 .modalCaption {
   padding: 14px 16px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
@@ -299,7 +253,7 @@ body {
   font-size: 14px;
 }
 
-/* Optional modal nav buttons (left/right). Keep for future use. */
+/* Left/right nav buttons */
 .modalNav {
   position: absolute;
   top: 50%;
@@ -311,6 +265,7 @@ body {
   width: 42px;
   height: 42px;
   cursor: pointer;
+  z-index: 2; /* NEW: ensure above image */
 }
 
 .modalNavLeft {
