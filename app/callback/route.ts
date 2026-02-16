@@ -81,6 +81,8 @@ export async function GET(req: Request) {
       maxAge: 60 * 60 * 24 * 30, // 30 days
     });
   }
+  // app/callback/route.ts
+  const appUrl = process.env.APP_URL || "http://127.0.0.1:3000/";
 
-  return NextResponse.redirect(new URL("/dashboard", req.url));
+  return NextResponse.redirect(new URL("/dashboard", appUrl));
 }
