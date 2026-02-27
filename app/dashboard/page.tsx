@@ -1,37 +1,31 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 
+import DashboardClient from "./DashboardClient";
+
 export default async function DashboardPage() {
   const cookieStore = await cookies();
   const hasToken = Boolean(cookieStore.get("spotify_access_token")?.value);
 
-  return (
-    <main className="landing">
-      <section className="landingInner">
-        <div className="textPanel">
-          <h1>Dashboard</h1>
-
-          {!hasToken ? (
-            <>
-              <p>You’re not logged in yet.</p>
-              <Link className="btn btnPrimary" href="/login">
-                Login with Spotify
-              </Link>
-            </>
-          ) : (
-            <>
-              <p>Choose a time range to view your top tracks.</p>
-              <div className="ctaRow">
-                <button className="btn" type="button">Short term</button>
-                <button className="btn" type="button">Medium term</button>
-                <button className="btn" type="button">Long term</button>
-              </div>
-            </>
-          )}
+  if (!hasToken) {
+    return (
+      <main className="centerGate">
+        <div className="gateCard">
+          <h1 className="gateTitle">Log in to Spotify</h1>
+          <p className="gateSub">
+            Connect your account to build playlists from your top tracks.
+          </p>
+          <Link className="btnPrimary" href="/login">
+            Continue with Spotify
+          </Link>
         </div>
+      </main>
+    );
+  }
 
-        <div />
-      </section>
+  return (
+    <main>
+      <DashboardClient />
     </main>
   );
 }

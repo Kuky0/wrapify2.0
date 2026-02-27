@@ -57,7 +57,7 @@ export async function GET(req: Request) {
   const tokenJson = await tokenRes.json();
   const accessToken = tokenJson.access_token as string;
   const refreshToken = tokenJson.refresh_token as string | undefined;
-  const expiresIn = tokenJson.expires_in as number; // seconds
+  const expiresIn = tokenJson.expires_in as number;
 
   // Clean up one-time cookies
   cookieStore.delete("spotify_state");
@@ -78,11 +78,12 @@ export async function GET(req: Request) {
       sameSite: "lax",
       secure: false,
       path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: 60 * 60 * 24 * 30,
     });
   }
-  // app/callback/route.ts
-  const appUrl = process.env.APP_URL || "http://127.0.0.1:3000/";
+  
+  // Prefer localhost to avoid 127.0.0.1 vs localhost dev-origin/cookie weirdness
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
 
   return NextResponse.redirect(new URL("/dashboard", appUrl));
 }

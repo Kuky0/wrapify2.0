@@ -52,7 +52,9 @@ export async function GET() {
     maxAge: 10 * 60,
   });
 
-  const scope = "user-top-read"; // minimal for now
+  // Required for previewing top tracks + creating playlists
+  const scope =
+    "user-top-read playlist-modify-public playlist-modify-private";
 
   const authorizeUrl = new URL("https://accounts.spotify.com/authorize");
   authorizeUrl.searchParams.set("client_id", clientId);
@@ -60,6 +62,8 @@ export async function GET() {
   authorizeUrl.searchParams.set("redirect_uri", redirectUri);
   authorizeUrl.searchParams.set("state", state);
   authorizeUrl.searchParams.set("scope", scope);
+  // Force a fresh consent screen when scopes change
+  authorizeUrl.searchParams.set("show_dialog", "true");
   authorizeUrl.searchParams.set("code_challenge_method", "S256");
   authorizeUrl.searchParams.set("code_challenge", codeChallenge);
 
