@@ -5,9 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 type TimePeriodUI = "Last Month" | "Last 6 Months" | "Last Year";
 type LengthUI = "Top 10" | "Top 50";
 
-// Shape we render in the preview list.
-// NOTE: `uri` is used by Spotify APIs (spotify:track:...), while `openUrl`
-// is a normal https link you can open in a new tab.
 type Track = {
   id: string;
   name: string;
@@ -53,14 +50,6 @@ export default function DashboardClient() {
     null
   );
 
-  /**
-   * Fetches preview tracks from our backend.
-   *
-   * Why call our own API instead of Spotify directly?
-   * - Our Spotify access token is stored in an HttpOnly cookie.
-   * - Client JS can't read HttpOnly cookies.
-   * - This keeps tokens off the client and out of the browser devtools.
-   */
   async function fetchPreview(signal?: AbortSignal) {
     setPreviewLoading(true);
     setPreviewError(null);
@@ -103,19 +92,13 @@ export default function DashboardClient() {
     }
   }
 
-  /**
-   * Auto-refresh the preview whenever the user changes time period or length.
-   */
   useEffect(() => {
     const controller = new AbortController();
     fetchPreview(controller.signal);
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange, limit]);
-  
-  /**
-   * Creates the playlist on Spotify through our backend route.
-   */
+
   async function buildPlaylist() {
     setBuildLoading(true);
     setBuildError(null);
@@ -157,9 +140,18 @@ export default function DashboardClient() {
           </p>
         </div>
 
-        <div className="studioBadge" title="Top Tracks • Spotify">
-          <span className="dot" aria-hidden="true" />
-          Top Tracks Builder
+        <div className="studioRight">
+          <nav className="studioNav" aria-label="Site">
+            <a className="navBtn" href="/about">About</a>
+            <a className="navBtn" href="/contact">Contact</a>
+            <a className="navBtn" href="/privacy">Privacy</a>
+            <a className="navBtn navBtnDanger" href="/logout">Log out</a>
+          </nav>
+
+          <div className="studioBadge" title="Top Tracks • Spotify">
+            <span className="dot" aria-hidden="true" />
+            Top Tracks Builder
+          </div>
         </div>
       </header>
 

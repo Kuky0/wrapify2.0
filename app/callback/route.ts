@@ -82,8 +82,7 @@ export async function GET(req: Request) {
     });
   }
   
-  // Prefer localhost to avoid 127.0.0.1 vs localhost dev-origin/cookie weirdness
-  const appUrl = process.env.APP_URL || "http://localhost:3000";
+  const appUrl = process.env.APP_URL || "http://127.0.0.1:3000";
 
   return NextResponse.redirect(new URL("/dashboard", appUrl));
 }
