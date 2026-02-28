@@ -1,6 +1,10 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const cookieStore = await cookies();
+  const hasToken = Boolean(cookieStore.get("spotify_access_token")?.value);
+
   return (
     <main className="pageCenter">
       <div className="textPanel">
@@ -8,9 +12,15 @@ export default function ContactPage() {
         <p className="pageLead">How to reach us.</p>
 
         <div className="ctaRow">
-          <Link className="btn btnPrimary" href="/login">
-            Login with Spotify
-          </Link>
+          {hasToken ? (
+            <Link className="btn btnPrimary" href="/dashboard">
+              Go to Dashboard
+            </Link>
+          ) : (
+            <Link className="btn btnPrimary" href="/login">
+              Login with Spotify
+            </Link>
+          )}
           <Link className="btn" href="/">
             Home
           </Link>
