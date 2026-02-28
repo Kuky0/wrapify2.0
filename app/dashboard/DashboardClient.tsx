@@ -142,6 +142,7 @@ export default function DashboardClient() {
 
         <div className="studioRight">
           <nav className="studioNav" aria-label="Site">
+            <a className="navBtn" href="/">Home</a>
             <a className="navBtn" href="/about">About</a>
             <a className="navBtn" href="/contact">Contact</a>
             <a className="navBtn" href="/privacy">Privacy</a>

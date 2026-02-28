@@ -11,9 +11,9 @@ type Preview = {
 };
 
 const previews: Preview[] = [
-  { src: "/minutes.png", alt: "Short term preview", title: "Short term", sub: "~ 4 weeks" },
-  { src: "/top artists.png", alt: "Medium term preview", title: "Medium term", sub: "~ 6 months" },
-  { src: "/top albums.png", alt: "Long term preview", title: "Long term", sub: "~ 1+ year" },
+  { src: "/settings.png", alt: "Playlist Settings", title: "Playlist Settings", sub: "Playlist Settings" },
+  { src: "/preview.png", alt: "Playlist Preview", title: "Playlist Preview", sub: "Playlist Preview" },
+  { src: "/playlist_builder.png", alt: "Playlist Builder", title: "Playlist Builder", sub: "Playlist Builder" },
 ];
 
 export default function LandingClient({ hasToken }: { hasToken: boolean }) {
@@ -120,7 +120,7 @@ export default function LandingClient({ hasToken }: { hasToken: boolean }) {
               Contact
             </Link>
             <Link className="btn" href="/privacy">
-              Privacy Policy
+              Privacy
             </Link>
           </div>
         </div>
