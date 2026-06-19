@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:e2e": "node --test tests/e2e/*.test.js"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.156.0",
